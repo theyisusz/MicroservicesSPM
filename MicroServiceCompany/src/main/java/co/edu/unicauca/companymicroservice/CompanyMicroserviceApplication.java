@@ -1,13 +1,13 @@
-package co.edu.unicauca.microservicecompany;
+package co.edu.unicauca.companymicroservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MicroServiceCompanyApplication {
+public class CompanyMicroserviceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(MicroServiceCompanyApplication.class, args);
+        SpringApplication.run(CompanyMicroserviceApplication.class, args);
     }
 
 }
