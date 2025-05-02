@@ -25,7 +25,7 @@ public class Project implements PrototypeProject {
     @Transient
     private ProjectState estado;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne
     @JoinColumn(name = "nit", referencedColumnName = "nit", nullable = false)
     @NotNull
     private Company company;

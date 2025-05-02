@@ -75,14 +75,12 @@ public class ProjectController {
 
     @PostMapping("/project")
     public ResponseEntity<?> createProject(@RequestBody ProjectRequest projectRequest) throws Exception {
-
-        Project savedProject = null;
         try {
-            savedProject = projectService.createProject(projectRequest);
+            Project savedProject = projectService.createProject(projectRequest);
+            return ResponseEntity.ok(savedProject);
         } catch (IllegalAccessException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error al guardar datos.\"}");
         }
-        return ResponseEntity.ok(savedProject);
     }
 
 

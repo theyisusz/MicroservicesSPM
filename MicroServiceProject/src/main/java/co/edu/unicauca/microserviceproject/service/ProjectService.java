@@ -1,6 +1,7 @@
 package co.edu.unicauca.microserviceproject.service;
 import co.edu.unicauca.microserviceproject.infra.Prototype.ProjectPrototypeRegister;
 import co.edu.unicauca.microserviceproject.infra.config.RabbitMQConfig;
+import co.edu.unicauca.microserviceproject.infra.config.RestTemplateConfig;
 import co.edu.unicauca.microserviceproject.infra.dto.ProjectMapperCompany;
 import co.edu.unicauca.microserviceproject.infra.dto.ProjectRequest;
 import co.edu.unicauca.microserviceproject.infra.dto.ProjectRequestCompany;
@@ -10,12 +11,19 @@ import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import co.edu.unicauca.microserviceproject.repository.CompanyRepository;
 import co.edu.unicauca.microserviceproject.repository.CoordinatorRepository;
 import co.edu.unicauca.microserviceproject.repository.PostulationRepository;
 import co.edu.unicauca.microserviceproject.repository.ProjectRepository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,11 +45,11 @@ public class ProjectService {
     private ProjectMapperCompany projectMapperCompany;
     @Autowired
     private ApplicationEventPublisher eventPublisher;
-
     @Autowired
     private ProjectPrototypeRegister prototypeRegistry;
     @Autowired
     private SenderService senderService;
+
 
     public List<Project> findAll() throws Exception {
         try {
@@ -88,15 +96,26 @@ public class ProjectService {
         }
 
         project.setCompany(company.get());
-
         Project savedProject = projectRepository.save(project);
+
         ProjectRequestCompany projectRequestCompany = projectMapperCompany.dto(savedProject);
 
-        try {
-            senderService.sendProject(projectRequestCompany);
-        } catch (AmqpException e) {
-            System.out.println(e.getMessage());
-        }
+        // Preparar llamada REST
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<ProjectRequestCompany> request = new HttpEntity<>(projectRequestCompany, headers);
+
+        ResponseEntity<ProjectRequestCompany> response = restTemplate.postForEntity(
+                "http://localhost:8081/CompanyMicroservice/Companies/saveProject",
+                request,
+                ProjectRequestCompany.class
+        );
+
+        ProjectRequestCompany responseBody = response.getBody();
+        System.out.println("Respuesta del microservicio: " + responseBody);
+
         return savedProject;
     }
 

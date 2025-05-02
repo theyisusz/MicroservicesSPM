@@ -3,7 +3,9 @@ package co.edu.unicauca.companymicroservice.Controller;
 import co.edu.unicauca.companymicroservice.Entities.Company;
 import co.edu.unicauca.companymicroservice.Entities.Project;
 import co.edu.unicauca.companymicroservice.Infra.DTO.CompanyDTO;
+import co.edu.unicauca.companymicroservice.Infra.DTO.ProjectRequestCompany;
 import co.edu.unicauca.companymicroservice.Service.CompanyService;
+import co.edu.unicauca.companymicroservice.Service.ProjectService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +19,8 @@ public class CompanyController {
 
     @Autowired
     private  CompanyService companyService;
-
+    @Autowired
+    private ProjectService projectService;
     public CompanyController(CompanyService companyService) {
         this.companyService = companyService;
     }
@@ -46,6 +49,16 @@ public class CompanyController {
             return ResponseEntity.status(HttpStatus.OK).body(companyService.save(entity));
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. no se pudo Guardar la Compañia.\"}");
+        }
+    }
+    @PostMapping("/saveProject")
+    public ResponseEntity<ProjectRequestCompany> save(@RequestBody ProjectRequestCompany entity){
+        try {
+            ProjectRequestCompany projectRequestCompany = projectService.createProject(entity);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(projectRequestCompany);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);  // o un mensaje de error si prefieres
         }
     }
 
