@@ -1,6 +1,7 @@
 package co.edu.unicauca.microserviceproject.entities;
 
 
+import co.edu.unicauca.microserviceproject.infra.Prototype.PrototypeProject;
 import co.edu.unicauca.microserviceproject.states.ProjectState;
 import co.edu.unicauca.microserviceproject.states.RecibidoState;
 import jakarta.persistence.*;
@@ -9,7 +10,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
-public class Project {
+public class Project implements PrototypeProject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -22,7 +23,7 @@ public class Project {
     private ProjectState estado;
 
     @ManyToOne
-    @JoinColumn(name = "nitCompany", referencedColumnName = "nit")
+    @JoinColumn(name = "nit", referencedColumnName = "nit")
     private Company company;
 
     @ManyToOne
@@ -60,7 +61,9 @@ public class Project {
         this.estado = estado;
         this.estado = new RecibidoState(); // Estado inicial
     }
-
+    public Project(ProjectState estado) {
+        this.estado = new RecibidoState();
+    }
     @PrePersist
     public void estado() {
         if(getEstado() == null){
@@ -165,6 +168,11 @@ public class Project {
 
     public Long getId() {
         return id;
+    }
+
+    @Override
+    public PrototypeProject clonar() {
+        return new Project(company,nombre,resumen,descripcion,objetivo,TiempoMaximo,presupuesto,FechaEntregadaEsperada,estado);
     }
 }
 

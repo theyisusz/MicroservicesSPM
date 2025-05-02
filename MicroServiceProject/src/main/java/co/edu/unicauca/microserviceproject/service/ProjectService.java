@@ -1,5 +1,8 @@
 package co.edu.unicauca.microserviceproject.service;
 
+
+
+import co.edu.unicauca.microserviceproject.infra.Prototype.ProjectPrototypeRegister;
 import co.edu.unicauca.microserviceproject.infra.config.RabbitMQConfig;
 import co.edu.unicauca.microserviceproject.infra.dto.ProjectMapperCompany;
 import co.edu.unicauca.microserviceproject.infra.dto.ProjectRequestCompany;
@@ -38,6 +41,9 @@ public class ProjectService {
     @Autowired
     private ProjectMapperCompany projectMapperCompany;
 
+    @Autowired
+    private ProjectPrototypeRegister prototypeRegistry;
+
 
     public List<Project> findAll() throws Exception {
         try {
@@ -70,6 +76,8 @@ public class ProjectService {
             throw new IllegalArgumentException("El DTO del proyecto no puede ser nulo");
         }
 
+
+        //Project project = (Project) prototypeRegistry.getGestor().clonar("DEFECTO");
         Project project = new Project();
         project.setNombre(dto.getNombre());
         project.setResumen(dto.getResumen());
@@ -82,10 +90,9 @@ public class ProjectService {
 
         Optional<Company> company = companyRepository.findById(dto.getNitCompany());
         if (company.isEmpty()) {
-            throw new IllegalAccessException("El usuario con ID " + dto.getNitCompany() + " no existe");
+            throw new IllegalAccessException("La compania con NIT " + dto.getNitCompany() + " no existe");
         }
         project.setCompany(company.get());
-
         // Guardar primero en base de datos
         Project savedProject = projectRepository.save(project);
 
