@@ -129,9 +129,10 @@ public class CompanyService{
         if (companyOptional.isPresent()) {
             Company company = companyOptional.get();
             Project project = projectMapper.projectToEntity(projectdto, company);
+
             project.setCompany(company);
-            company.getProyectos().add(project);
-            companyRepository.save(company);
+            projectRepository.save(project);
+
         } else {
             throw new RuntimeException("No se encontró la compañía con NIT: " + projectdto.getNitCompany());
         }

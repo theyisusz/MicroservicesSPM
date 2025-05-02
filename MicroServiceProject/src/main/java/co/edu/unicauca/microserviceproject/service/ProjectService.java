@@ -6,14 +6,10 @@ import co.edu.unicauca.microserviceproject.infra.dto.ProjectRequest;
 import co.edu.unicauca.microserviceproject.infra.dto.ProjectRequestCompany;
 import co.edu.unicauca.microserviceproject.entities.Company;
 import co.edu.unicauca.microserviceproject.entities.Project;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.PersistenceException;
 import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import co.edu.unicauca.microserviceproject.repository.CompanyRepository;
 import co.edu.unicauca.microserviceproject.repository.CoordinatorRepository;
@@ -41,15 +37,11 @@ public class ProjectService {
     private ProjectMapperCompany projectMapperCompany;
     @Autowired
     private ApplicationEventPublisher eventPublisher;
-    @Autowired
-    private EntityManager entityManager;
 
     @Autowired
     private ProjectPrototypeRegister prototypeRegistry;
     @Autowired
     private SenderService senderService;
-    @Autowired
-    private ProjectPrototypeRegister projectPrototypeRegister;
 
     public List<Project> findAll() throws Exception {
         try {
@@ -75,25 +67,13 @@ public class ProjectService {
         return projectRepository.findById(id).get();
     }
 
-    @Transactional
+
     public Project createProject(ProjectRequest dto) throws Exception {
-        // Validación exhaustiva
-        if (dto == null || dto.getNitCompany() == null) {
-            throw new IllegalArgumentException("Datos requeridos faltantes");
+        if (dto == null) {
+            throw new IllegalArgumentException("El DTO del proyecto no puede ser nulo");
         }
 
-        // Carga explícita con verificación de estado
-        Company company = companyRepository.findById(dto.getNitCompany())
-                .orElseThrow(() -> new EntityNotFoundException(
-                        String.format("Compañía con NIT %d no encontrada", dto.getNitCompany())));
-
-        // Verificación adicional del estado de la entidad
-        if (!entityManager.contains(company)) {
-            company = entityManager.merge(company);
-        }
-
-        // Construcción segura del proyecto
-        Project project = (Project)projectPrototypeRegister.getGestor().clonar("DEFECTO");
+        Project project = new Project();
         project.setNombre(dto.getNombre());
         project.setResumen(dto.getResumen());
         project.setDescripcion(dto.getDescripcion());
@@ -101,22 +81,23 @@ public class ProjectService {
         project.setTiempoMaximo(dto.getTiempoMaximo());
         project.setPresupuesto(dto.getPresupuesto());
         project.setFechaEntregadaEsperada(dto.getFechaEntregadaEsperada());
-        project.setCompany(company); // Asignación crítica
 
-        // Persistencia con verificación
-        try {
-            Project savedProject = projectRepository.save(project);
-            entityManager.flush(); // Fuerza la escritura inmediata
-
-            // Verificación post-guardado
-            if (savedProject.getCompany() == null) {
-                throw new IllegalStateException("Relación con compañía perdida después de persistir");
-            }
-
-            return savedProject;
-        } catch (DataIntegrityViolationException e) {
-            throw new PersistenceException("Error de integridad referencial", e);
+        Optional<Company> company = companyRepository.findById(dto.getNitCompany());
+        if (company.isEmpty()) {
+            throw new IllegalArgumentException("La compañía con NIT " + dto.getNitCompany() + " no existe.");
         }
+
+        project.setCompany(company.get());
+
+        Project savedProject = projectRepository.save(project);
+        ProjectRequestCompany projectRequestCompany = projectMapperCompany.dto(savedProject);
+
+        try {
+            senderService.sendProject(projectRequestCompany);
+        } catch (AmqpException e) {
+            System.out.println(e.getMessage());
+        }
+        return savedProject;
     }
 
     public void deleteById(Long id) throws Exception {

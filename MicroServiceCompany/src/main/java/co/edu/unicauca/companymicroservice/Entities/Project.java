@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 public class Project {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idProject;
 
     @Column(columnDefinition = "TEXT", nullable = false)
@@ -33,7 +32,7 @@ public class Project {
     private String fechaEntregaEsperada;
 
     @ManyToOne
-    @JoinColumn(name = "nit", nullable = false)
+    @JoinColumn(name = "nitEmpresa",referencedColumnName = "nit", nullable = false)
     private Company company;
 
 
