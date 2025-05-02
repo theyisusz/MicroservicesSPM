@@ -1,18 +1,11 @@
 package co.edu.unicauca.microserviceproject.service;
-
-
-
 import co.edu.unicauca.microserviceproject.infra.Prototype.ProjectPrototypeRegister;
-import co.edu.unicauca.microserviceproject.infra.config.ProjectCreatedEvent;
 import co.edu.unicauca.microserviceproject.infra.config.RabbitMQConfig;
 import co.edu.unicauca.microserviceproject.infra.dto.ProjectMapperCompany;
+import co.edu.unicauca.microserviceproject.infra.dto.ProjectRequest;
 import co.edu.unicauca.microserviceproject.infra.dto.ProjectRequestCompany;
-import co.edu.unicauca.microserviceproject.infra.dto.ProjectRequestPostulation;
 import co.edu.unicauca.microserviceproject.entities.Company;
-import co.edu.unicauca.microserviceproject.entities.Coordinator;
-import co.edu.unicauca.microserviceproject.entities.Postulation;
 import co.edu.unicauca.microserviceproject.entities.Project;
-import jakarta.transaction.Transactional;
 import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +15,8 @@ import co.edu.unicauca.microserviceproject.repository.CompanyRepository;
 import co.edu.unicauca.microserviceproject.repository.CoordinatorRepository;
 import co.edu.unicauca.microserviceproject.repository.PostulationRepository;
 import co.edu.unicauca.microserviceproject.repository.ProjectRepository;
-import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,13 +35,13 @@ public class ProjectService {
     private RabbitTemplate rabbitTemplate;
     @Autowired
     private ProjectMapperCompany projectMapperCompany;
-
     @Autowired
     private ApplicationEventPublisher eventPublisher;
 
     @Autowired
     private ProjectPrototypeRegister prototypeRegistry;
-
+    @Autowired
+    private SenderService senderService;
 
     public List<Project> findAll() throws Exception {
         try {
@@ -76,14 +68,11 @@ public class ProjectService {
     }
 
     @Transactional
-    public Project createProject(ProjectRequestPostulation dto) throws Exception {
-
+    public Project createProject(ProjectRequest dto) throws Exception {
         if (dto == null) {
             throw new IllegalArgumentException("El DTO del proyecto no puede ser nulo");
         }
 
-
-        //Project project = (Project) prototypeRegistry.getGestor().clonar("DEFECTO");
         Project project = new Project();
         project.setNombre(dto.getNombre());
         project.setResumen(dto.getResumen());
@@ -93,14 +82,22 @@ public class ProjectService {
         project.setPresupuesto(dto.getPresupuesto());
         project.setFechaEntregadaEsperada(dto.getFechaEntregadaEsperada());
 
-
         Optional<Company> company = companyRepository.findById(dto.getNitCompany());
         if (company.isEmpty()) {
-            throw new IllegalAccessException("La compania con NIT " + dto.getNitCompany() + " no existe");
+            throw new IllegalArgumentException("La compañía con NIT " + dto.getNitCompany() + " no existe.");
         }
+
         project.setCompany(company.get());
-        // Guardar primero en base de datos
-        Project savedProject = projectRepository.saveAndFlush(project);
+
+        Project savedProject = projectRepository.save(project);
+        ProjectRequestCompany projectRequestCompany = projectMapperCompany.dto(savedProject);
+
+        try {
+            senderService.sendProject(projectRequestCompany);
+        } catch (AmqpException e) {
+            System.out.println(e.getMessage());
+        }
+
         return savedProject;
     }
 

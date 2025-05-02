@@ -5,6 +5,9 @@ import co.edu.unicauca.microserviceproject.infra.Prototype.PrototypeProject;
 import co.edu.unicauca.microserviceproject.states.ProjectState;
 import co.edu.unicauca.microserviceproject.states.RecibidoState;
 import jakarta.persistence.*;
+import org.antlr.v4.runtime.misc.NotNull;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 
 import java.util.List;
@@ -22,8 +25,9 @@ public class Project implements PrototypeProject {
     @Transient
     private ProjectState estado;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "nit", referencedColumnName = "nit")
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "nit", referencedColumnName = "nit", nullable = false)
+    @NotNull
     private Company company;
 
     @ManyToOne
@@ -168,6 +172,10 @@ public class Project implements PrototypeProject {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override

@@ -22,6 +22,7 @@ public class ProjectEventListener {
     public void handle(ProjectCreatedEvent event) {
         Project project = event.getProject();
         ProjectRequestCompany dto = projectMapperCompany.dto(project);
+        System.out.println("si envio");
         rabbitTemplate.convertAndSend(RabbitMQConfig.PROJECT_QUEUE, dto);
     }
 
