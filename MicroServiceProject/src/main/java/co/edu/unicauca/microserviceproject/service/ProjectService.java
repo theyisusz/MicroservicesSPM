@@ -3,6 +3,7 @@ package co.edu.unicauca.microserviceproject.service;
 
 
 import co.edu.unicauca.microserviceproject.infra.Prototype.ProjectPrototypeRegister;
+import co.edu.unicauca.microserviceproject.infra.config.ProjectCreatedEvent;
 import co.edu.unicauca.microserviceproject.infra.config.RabbitMQConfig;
 import co.edu.unicauca.microserviceproject.infra.dto.ProjectMapperCompany;
 import co.edu.unicauca.microserviceproject.infra.dto.ProjectRequestCompany;
@@ -15,11 +16,13 @@ import jakarta.transaction.Transactional;
 import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import co.edu.unicauca.microserviceproject.repository.CompanyRepository;
 import co.edu.unicauca.microserviceproject.repository.CoordinatorRepository;
 import co.edu.unicauca.microserviceproject.repository.PostulationRepository;
 import co.edu.unicauca.microserviceproject.repository.ProjectRepository;
+import org.springframework.transaction.annotation.Propagation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +43,9 @@ public class ProjectService {
     private RabbitTemplate rabbitTemplate;
     @Autowired
     private ProjectMapperCompany projectMapperCompany;
+
+    @Autowired
+    private ApplicationEventPublisher eventPublisher;
 
     @Autowired
     private ProjectPrototypeRegister prototypeRegistry;
@@ -94,16 +100,7 @@ public class ProjectService {
         }
         project.setCompany(company.get());
         // Guardar primero en base de datos
-        Project savedProject = projectRepository.save(project);
-
-        ProjectRequestCompany projectRequestCompany = projectMapperCompany.dto(project);
-
-        try {
-            // Enviar a RabbitMQ
-            rabbitTemplate.convertAndSend(RabbitMQConfig.PROJECT_QUEUE, projectRequestCompany);
-        } catch (AmqpException e) {
-            System.out.println(e.getMessage());
-        }
+        Project savedProject = projectRepository.saveAndFlush(project);
         return savedProject;
     }
 

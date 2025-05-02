@@ -22,7 +22,7 @@ public class Project implements PrototypeProject {
     @Transient
     private ProjectState estado;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "nit", referencedColumnName = "nit")
     private Company company;
 
@@ -172,6 +172,9 @@ public class Project implements PrototypeProject {
 
     @Override
     public PrototypeProject clonar() {
+        return new Project(company,nombre,resumen,descripcion,objetivo,TiempoMaximo,presupuesto,FechaEntregadaEsperada,estado);
+    }
+    public Project clone() {
         return new Project(company,nombre,resumen,descripcion,objetivo,TiempoMaximo,presupuesto,FechaEntregadaEsperada,estado);
     }
 }

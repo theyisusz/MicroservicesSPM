@@ -7,7 +7,16 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ProjectMapperCompany {
 
-    @Mapping(source = "company.nit", target = "nitCompany")
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "nombre", target = "nombre")
+    @Mapping(source = "resumen", target = "resumen")
+    @Mapping(source = "descripcion", target = "descripcion")
+    @Mapping(source = "objetivo", target = "objetivo")
+    @Mapping(source = "tiempoMaximo", target = "tiempoMaximo")
+    @Mapping(source = "presupuesto", target = "presupuesto")
+    @Mapping(source = "fechaEntregadaEsperada", target = "fechaEntregadaEsperada")
+    @Mapping(source = "company.nit", target = "nitCompany") // Asegura que company no sea null
     ProjectRequestCompany dto(Project project);
+
 
 }

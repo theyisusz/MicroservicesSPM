@@ -33,6 +33,7 @@ public class Company {
         this.estado = estado;
     }
 
+
     private String estado;
     public Company() {
     }
