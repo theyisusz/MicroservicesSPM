@@ -22,7 +22,7 @@ public class UsuarioService {
     }
     @Transactional
     public Optional<User> findByUsername(String username) {
-        // Como en tu entidad username es @Id, puedes usar findById:
+
         return repository.findByUsername(username);
     }
     @Transactional

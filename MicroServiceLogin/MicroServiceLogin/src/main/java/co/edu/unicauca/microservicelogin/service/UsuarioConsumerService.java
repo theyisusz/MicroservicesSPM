@@ -19,10 +19,10 @@ public class UsuarioConsumerService {
 
     @RabbitListener(queues = RabbitMQConfig.QUEUE_STUDENT_CREATED)
     public void StudentCreated(UsuarioRequest usuarionuevo) {
-        User user=modelMapper.map(usuarionuevo, User.class);
+        User user = modelMapper.map(usuarionuevo, User.class);
         usuarioRepository.save(user);
         System.out.println("usario regitrado: "+usuarionuevo.getUsername());
-    }
+         }
     @RabbitListener(queues = RabbitMQConfig.QUEUE_COMPANY_CREATED)
     public void CompanyCreated(UsuarioRequest companynuevo) {
         User user=modelMapper.map(companynuevo, User.class);

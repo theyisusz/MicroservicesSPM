@@ -1,43 +1,42 @@
 package co.edu.unicauca.studentmicroservice.Entities;
 
 import jakarta.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "student")
 public class Student {
 
     @Id
-    @Column(length = 10, nullable = false,unique=true)
-    private String codEst;
-    @Column(length = 30, nullable = false,unique = true)
-    private String nombre;
     @Column(length = 10, nullable = false, unique = true)
     private String cedula;
-    @Column(length = 10, nullable = false)
-    private String telefono;
+    @Column(length = 10, nullable = false,unique=true)
+    private String codigo;
     @Column(length = 35, nullable = false)
     private String email;
+    @Column(length = 30, nullable = false,unique = true)
+    private String nombre;
+    @Column(length = 10, nullable = false)
+    private String telefono;
 
 
 
     public Student() {
     }
 
-    public Student(String cedula, String codEst, String email, String nombre, String telefono) {
+    public Student(String cedula, String codigo, String email, String nombre, String telefono) {
         this.cedula = cedula;
-        this.codEst = codEst;
+        this.codigo = codigo;
         this.email = email;
         this.nombre = nombre;
         this.telefono = telefono;
     }
 
-    public String getCodEst() {
-        return codEst;
+    public String getCodigo() {
+        return codigo;
     }
 
-    public void setCodEst(String codEst) {
-        this.codEst = codEst;
+    public void setCodigo(String codEst) {
+        this.codigo = codEst;
     }
 
     public String getCedula() {

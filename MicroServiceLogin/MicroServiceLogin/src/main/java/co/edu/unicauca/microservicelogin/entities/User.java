@@ -1,5 +1,6 @@
 package co.edu.unicauca.microservicelogin.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 
 import jakarta.persistence.Id;
@@ -9,10 +10,15 @@ import jakarta.persistence.Table;
 @Table(name = "users")
 public class User {
     @Id
-    private String username;
+    @Column(length = 15, nullable = false)
     private long id;
+    @Column(length = 20, nullable = false, unique = true)
+    private String username;
+    @Column(length = 15, nullable = false)
     private String contrasenia;
+    @Column(length = 20, nullable = false)
     private String rol;
+    @Column(length = 40, nullable = false)
     private String email;
     public User() {
 
