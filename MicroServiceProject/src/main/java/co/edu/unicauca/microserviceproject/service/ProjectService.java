@@ -2,11 +2,10 @@ package co.edu.unicauca.microserviceproject.service;
 import co.edu.unicauca.microserviceproject.infra.Prototype.ProjectPrototypeRegister;
 import co.edu.unicauca.microserviceproject.infra.config.RabbitMQConfig;
 import co.edu.unicauca.microserviceproject.infra.config.RestTemplateConfig;
-import co.edu.unicauca.microserviceproject.infra.dto.ProjectMapperCompany;
-import co.edu.unicauca.microserviceproject.infra.dto.ProjectRequest;
-import co.edu.unicauca.microserviceproject.infra.dto.ProjectRequestCompany;
+import co.edu.unicauca.microserviceproject.infra.dto.*;
 import co.edu.unicauca.microserviceproject.entities.Company;
 import co.edu.unicauca.microserviceproject.entities.Project;
+import co.edu.unicauca.microserviceproject.states.MessageResponse;
 import org.springframework.amqp.AmqpException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +48,8 @@ public class ProjectService {
     private ProjectPrototypeRegister prototypeRegistry;
     @Autowired
     private SenderService senderService;
+    @Autowired
+    private ProjectPrototypeRegister projectPrototypeRegister;
 
 
     public List<Project> findAll() throws Exception {
@@ -81,7 +82,7 @@ public class ProjectService {
             throw new IllegalArgumentException("El DTO del proyecto no puede ser nulo");
         }
 
-        Project project = new Project();
+        Project project = (Project) projectPrototypeRegister.getGestor().clonar("DEFECTO");
         project.setNombre(dto.getNombre());
         project.setResumen(dto.getResumen());
         project.setDescripcion(dto.getDescripcion());
@@ -89,7 +90,7 @@ public class ProjectService {
         project.setTiempoMaximo(dto.getTiempoMaximo());
         project.setPresupuesto(dto.getPresupuesto());
         project.setFechaEntregadaEsperada(dto.getFechaEntregadaEsperada());
-
+        project.setEstadoTexto("RECIBIDO");
         Optional<Company> company = companyRepository.findById(dto.getNitCompany());
         if (company.isEmpty()) {
             throw new IllegalArgumentException("La compañía con NIT " + dto.getNitCompany() + " no existe.");
@@ -123,5 +124,26 @@ public class ProjectService {
         projectRepository.deleteById(id);
     }
 
+    @Transactional
+    public ProjectStatusResponse updateProjectStatus(Long projectId, String action) {
+
+        System.out.println("sdaadas");
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new RuntimeException("Proyecto no encontrado"));
+
+        MessageResponse messageResponse = null;
+
+        if ("avanzar".equalsIgnoreCase(action)) {
+            messageResponse = project.getEstado().avanzarEstado(project);
+        } else if ("noAvanzar".equalsIgnoreCase(action)) {
+            messageResponse = project.getEstado().NoAvanzaEstado(project);
+        } else {
+            throw new IllegalArgumentException("Acción no válida: " + action);
+        }
+        project.setEstado(messageResponse.getEstado());
+        projectRepository.save(project);
+
+        return new ProjectStatusResponse(messageResponse.getEstado().getEstado(), messageResponse.getMessage());
+    }
 
 }

@@ -14,20 +14,19 @@ import co.edu.unicauca.microserviceproject.entities.Project;
 public class RechazadoState implements ProjectState {
 
     @Override
-    public ProjectState avanzarEstado(Project proyecto) {
-        return proyecto.getEstado();
+    public MessageResponse avanzarEstado(Project proyecto) {
+        // El proyecto ha sido rechazado y no puede avanzar
+        return new MessageResponse(this, "El proyecto ha sido rechazado y no puede avanzar.");
     }
 
     @Override
-    public ProjectState NoAvanzaEstado(Project proyecto) {
-        return proyecto.getEstado();
+    public MessageResponse NoAvanzaEstado(Project proyecto) {
+        // El estado no avanza, permanece en "RECHAZADO"
+        return new MessageResponse(this, "El proyecto está en estado RECHAZADO y no avanza.");
     }
 
     @Override
     public String getEstado() {
         return "RECHAZADO";
     }
-
-
-    
 }

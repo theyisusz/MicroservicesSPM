@@ -15,22 +15,21 @@ import co.edu.unicauca.microserviceproject.entities.Project;
 public class RecibidoState implements ProjectState{
 
     @Override
-    public ProjectState avanzarEstado(Project proyecto) {
+    public MessageResponse avanzarEstado(Project proyecto) {
         proyecto.setEstado(new AceptadoState());
-        return proyecto.getEstado();
+        return new MessageResponse(proyecto.getEstado(), "El proyecto ha sido recibido y ahora está ACEPTADO.");
     }
 
     @Override
-    public ProjectState NoAvanzaEstado(Project proyecto) {
+    public MessageResponse NoAvanzaEstado(Project proyecto) {
         proyecto.setEstado(new RechazadoState());
-        return proyecto.getEstado();
+        return new MessageResponse(proyecto.getEstado(), "El proyecto ha sido rechazado.");
     }
 
     @Override
     public String getEstado() {
         return "RECIBIDO";
     }
-
   
 
    

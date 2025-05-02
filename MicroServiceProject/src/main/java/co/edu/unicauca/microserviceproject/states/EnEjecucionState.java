@@ -12,22 +12,20 @@ import co.edu.unicauca.microserviceproject.entities.Project;
 public class EnEjecucionState implements ProjectState {
 
     @Override
-    public ProjectState avanzarEstado(Project proyecto) {
-        proyecto.setEstado(new CerradoState());
-        return proyecto.getEstado();
+    public MessageResponse avanzarEstado(Project proyecto) {
+        proyecto.setEstado(new CerradoState());  // Cambia a "CERRADO"
+        return new MessageResponse(proyecto.getEstado(), "El proyecto está en ejecución y ahora está cerrado.");
     }
 
     @Override
-    public ProjectState NoAvanzaEstado(Project proyecto) {
-        return proyecto.getEstado();
+    public MessageResponse NoAvanzaEstado(Project proyecto) {
+        return new MessageResponse(this, "El proyecto permanece en estado EN EJECUCIÓN.");
     }
-    
+
     @Override
     public String getEstado() {
-        return "EJECUCION";
+        return "EN EJECUCION";
     }
-
- 
 
     
 }

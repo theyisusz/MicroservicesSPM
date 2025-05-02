@@ -11,8 +11,11 @@ import co.edu.unicauca.microserviceproject.entities.Project;
  * @author Yisus
  */
 public interface ProjectState {
-    ProjectState avanzarEstado(Project proyecto);
-    ProjectState NoAvanzaEstado(Project proyecto);
+
+    MessageResponse avanzarEstado(Project proyecto);
+
+    MessageResponse NoAvanzaEstado(Project proyecto);
+
     String getEstado();
     }
 

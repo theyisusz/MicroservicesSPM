@@ -13,20 +13,18 @@ import co.edu.unicauca.microserviceproject.entities.Project;
 public class CerradoState implements ProjectState{
 
     @Override
-    public ProjectState avanzarEstado(Project proyecto) {
-        return proyecto.getEstado();
+    public MessageResponse avanzarEstado(Project proyecto) {
+        return new MessageResponse(this, "El proyecto está cerrado y no puede avanzar.");
     }
 
     @Override
-    public ProjectState NoAvanzaEstado(Project proyecto) {
-        return proyecto.getEstado();
+    public MessageResponse NoAvanzaEstado(Project proyecto) {
+        return new MessageResponse(this, "El proyecto permanece en estado CERRADO.");
     }
 
     @Override
     public String getEstado() {
         return "CERRADO";
     }
-
-  
   
 }

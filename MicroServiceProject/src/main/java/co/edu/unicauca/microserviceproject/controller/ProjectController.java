@@ -1,6 +1,5 @@
 package co.edu.unicauca.microserviceproject.controller;
-import co.edu.unicauca.microserviceproject.infra.dto.ProjectMapperCompany;
-import co.edu.unicauca.microserviceproject.infra.dto.ProjectRequest;
+import co.edu.unicauca.microserviceproject.infra.dto.*;
 import co.edu.unicauca.microserviceproject.entities.Project;
 import co.edu.unicauca.microserviceproject.service.SenderService;
 import org.hibernate.Hibernate;
@@ -83,6 +82,17 @@ public class ProjectController {
         }
     }
 
+    @PutMapping("/projects/status")
+    public ResponseEntity<?> updateStatus(@RequestBody ProjectStatusRequest statusRequest) {
+        ProjectStatusResponse response = null;
+        try {
+            response = projectService.updateProjectStatus(statusRequest.getProjectId(), statusRequest.getAction());
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (Exception e) {
+            response.setMensaje("{\"error\":\"Error al actualizar datos.\"}");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+    }
 
 
 }
