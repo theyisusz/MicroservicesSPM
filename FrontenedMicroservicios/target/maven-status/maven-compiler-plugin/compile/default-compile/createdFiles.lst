@@ -3,6 +3,7 @@ co\edu\unicauca\view\GUIEstablecerContraseña$1.class
 co\edu\unicauca\view\GUICodigoContraseña$2.class
 co\edu\unicauca\view\GUIGestionSofwareCoordination$2.class
 co\edu\unicauca\view\GUIRegistreCompany$1.class
+co\edu\unicauca\access\CompanyRepository$1.class
 co\edu\unicauca\infra\Messages.class
 co\edu\unicauca\view\GUILogin$2.class
 co\edu\unicauca\view\GUIRecordType$1.class
@@ -57,6 +58,7 @@ co\edu\unicauca\domain\services\ProjectService.class
 co\edu\unicauca\infra\gotaAguaTexto.class
 co\edu\unicauca\view\GUIGestionSottwareStudent$1.class
 co\edu\unicauca\view\GUIGestionSofwareCoordinationProject$2.class
+co\edu\unicauca\view\GUIGestionSofwareCoordination$9.class
 co\edu\unicauca\interfaces\ICoordinatorRepository.class
 co\edu\unicauca\infra\Subject$1.class
 co\edu\unicauca\view\GUIGestionSofwareCoordinationProject$3.class
@@ -101,6 +103,7 @@ co\edu\unicauca\view\GUIDetalleProyecto$1.class
 co\edu\unicauca\infra\FrameFactory.class
 co\edu\unicauca\view\GUIGestionSoftwareEmpresa$3.class
 co\edu\unicauca\domain\entities\Project.class
+co\edu\unicauca\view\GUIGestionSofwareCoordination$8.class
 co\edu\unicauca\view\GUIRegisterStudent$3.class
 co\edu\unicauca\view\GUIRegistreCompany$2.class
 co\edu\unicauca\view\GUIRecuperarContraseña$3.class

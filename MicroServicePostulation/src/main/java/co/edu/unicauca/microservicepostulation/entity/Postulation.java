@@ -4,6 +4,7 @@ import lombok.*;
 import org.antlr.v4.runtime.misc.NotNull;
 
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Entity
@@ -20,6 +21,14 @@ public class Postulation {
     private Long idEstudiante;
     @NotNull
     private Long idProyecto;
-   // @NotNull
-   // private LocalDateTime fechaPostulacion;
+    @NotNull
+    private Timestamp fechaPostulacion;
+
+    public Timestamp getFechaPostulacion() {
+        return fechaPostulacion;
+    }
+
+    public void setFechaPostulacion(Timestamp fechaPostulacion) {
+        this.fechaPostulacion = fechaPostulacion;
+    }
 }
