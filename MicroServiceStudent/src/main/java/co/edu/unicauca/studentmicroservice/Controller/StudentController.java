@@ -44,4 +44,13 @@ public class StudentController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"error\":\"Error. no se pudo Guardar el Estudiante.\"}");
         }
     }
+    @GetMapping("/obtenerPorUsername/{username}")
+    public ResponseEntity<?> getByUsername(@PathVariable String username) {
+        try {
+            return ResponseEntity.ok(studentService.findByUsername(username));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("{\"error\":\"No se encontró el estudiante con username.\"}");
+        }
+    }
 }

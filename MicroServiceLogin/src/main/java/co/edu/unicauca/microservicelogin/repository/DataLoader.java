@@ -38,7 +38,16 @@ public class DataLoader implements CommandLineRunner {
             user2.setContrasenia("clave");
             user2.setEmail("mera@gmail.com");
             user2.setRol("COMPANY");
+
+
             usuarioService.save(user2);
+            UsuarioRequest user3 = new UsuarioRequest();
+            user3.setId(40);
+            user3.setUsername("Camila");
+            user3.setContrasenia("0816");
+            user3.setEmail("camila@unicauca.edu.co");
+            user3.setRol("STUDENT");
+            usuarioService.save(user3);
 
 
 
