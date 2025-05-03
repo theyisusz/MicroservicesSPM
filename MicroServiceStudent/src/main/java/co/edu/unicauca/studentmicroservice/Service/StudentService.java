@@ -96,4 +96,12 @@ public class StudentService implements BaseService<Student> {
     public boolean delete(Long id) throws Exception {
         return false;
     }
+    @Transactional
+    public Student findByUsername(String username) throws Exception {
+        try {
+            return studentRepository.findByNombre(username); // Asegúrate que este método existe
+        } catch (Exception e) {
+            throw new Exception("Error al buscar estudiante por username", e);
+        }
+    }
 }

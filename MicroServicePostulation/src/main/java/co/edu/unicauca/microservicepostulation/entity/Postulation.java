@@ -20,6 +20,6 @@ public class Postulation {
     private Long idEstudiante;
     @NotNull
     private Long idProyecto;
-    @NotNull
-    private LocalDateTime fechaPostulacion;
+   // @NotNull
+   // private LocalDateTime fechaPostulacion;
 }

@@ -27,7 +27,7 @@ public class PostulationService {
         Postulation postulation = Postulation.builder()
                 .idEstudiante(idEstudiante)
                 .idProyecto(idProyecto)
-                .fechaPostulacion(LocalDateTime.now())
+                //.fechaPostulacion(LocalDateTime.now())
                 .build();
 
         postulation = postulationRepository.save(postulation);
@@ -36,8 +36,8 @@ public class PostulationService {
         PostulationDTO dto = new PostulationDTO(
                 postulation.getId(),
                 idEstudiante.toString(),
-                idProyecto,
-                Timestamp.valueOf(postulation.getFechaPostulacion())
+                idProyecto
+               // Timestamp.valueOf(postulation.getFechaPostulacion())
         );
         senderService.sendPostulation(dto);
 
