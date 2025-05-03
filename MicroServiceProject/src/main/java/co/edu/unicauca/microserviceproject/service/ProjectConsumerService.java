@@ -29,7 +29,7 @@ public class ProjectConsumerService {
         }
 
     }
-    @RabbitListener(queues = RabbitMQConfig.PROJECT_QUEUE)
+    @RabbitListener(queues = RabbitMQConfig.COMPANY_QUEUE)
     public void receiveMessage2(Company com) {
         try{
             companyRepository.save(com);

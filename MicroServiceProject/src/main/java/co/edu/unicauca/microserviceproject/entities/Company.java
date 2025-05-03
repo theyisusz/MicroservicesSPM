@@ -13,6 +13,8 @@ public class Company {
     private Long nit;
     private String nombre;
 
+
+
     @OneToMany(mappedBy = "company")
     private List<Project> projects = new ArrayList<>();
 
@@ -48,7 +50,9 @@ public class Company {
     public Company(Long nit, String nombre,String estado) {
         this.nit = nit;
         this.nombre = nombre;
+        estado = "ACTIVO";
     }
+
     @PrePersist
     public void prePersist(){
         if(estado == null) {
