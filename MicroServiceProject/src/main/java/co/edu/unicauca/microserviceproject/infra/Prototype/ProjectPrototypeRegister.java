@@ -1,7 +1,7 @@
 package co.edu.unicauca.microserviceproject.infra.Prototype;
 
 import co.edu.unicauca.microserviceproject.entities.Project;
-import co.edu.unicauca.microserviceproject.states.RecibidoState;
+import co.edu.unicauca.microserviceproject.infra.states.RecibidoState;
 import jakarta.annotation.PostConstruct;
 import org.springframework.stereotype.Component;
 

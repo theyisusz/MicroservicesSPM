@@ -1,12 +1,10 @@
 package co.edu.unicauca.microserviceproject.service;
+
 import co.edu.unicauca.microserviceproject.infra.Prototype.ProjectPrototypeRegister;
-import co.edu.unicauca.microserviceproject.infra.config.RabbitMQConfig;
-import co.edu.unicauca.microserviceproject.infra.config.RestTemplateConfig;
 import co.edu.unicauca.microserviceproject.infra.dto.*;
 import co.edu.unicauca.microserviceproject.entities.Company;
 import co.edu.unicauca.microserviceproject.entities.Project;
-import co.edu.unicauca.microserviceproject.states.MessageResponse;
-import org.springframework.amqp.AmqpException;
+import co.edu.unicauca.microserviceproject.infra.states.MessageResponse;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -20,12 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ProjectService {
@@ -61,15 +58,18 @@ public class ProjectService {
         }
     }
 
-    public List<Project> findAllCompany(Long nit) throws Exception {
+    public List<ProjectRequestCompany> findAllCompany(Long nit) throws Exception {
         try {
-            return projectRepository.findAllByCompany_Nit(nit);
+            List<Project> projects = projectRepository.findAllByCompany_Nit(nit);
+
+            return projects.stream()
+                    .map(projectMapperCompany::dto)
+                    .collect(Collectors.toList());
 
         } catch (Exception e) {
-            throw new Exception(e.getMessage());
+            throw new Exception("Error al obtener los proyectos de la empresa: " + e.getMessage());
         }
     }
-
 
 
     public Project findById(Long id) throws Exception {
@@ -109,7 +109,7 @@ public class ProjectService {
         HttpEntity<ProjectRequestCompany> request = new HttpEntity<>(projectRequestCompany, headers);
 
         ResponseEntity<ProjectRequestCompany> response = restTemplate.postForEntity(
-                "http://localhost:8081/CompanyMicroservice/Companies/saveProject",
+                "http://localhost:8088/apiCompanies/saveProject",
                 request,
                 ProjectRequestCompany.class
         );

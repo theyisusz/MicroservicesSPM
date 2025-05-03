@@ -2,13 +2,11 @@ package co.edu.unicauca.microserviceproject.entities;
 
 
 import co.edu.unicauca.microserviceproject.infra.Prototype.PrototypeProject;
-import co.edu.unicauca.microserviceproject.states.EstadoFactory;
-import co.edu.unicauca.microserviceproject.states.ProjectState;
-import co.edu.unicauca.microserviceproject.states.RecibidoState;
+import co.edu.unicauca.microserviceproject.infra.states.EstadoFactory;
+import co.edu.unicauca.microserviceproject.infra.states.ProjectState;
+import co.edu.unicauca.microserviceproject.infra.states.RecibidoState;
 import jakarta.persistence.*;
 import org.antlr.v4.runtime.misc.NotNull;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 
 
 import java.util.List;

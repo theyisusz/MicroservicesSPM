@@ -12,7 +12,16 @@ public class ProjectRequestCompany {
     private String tiempoMaximo;
     private String presupuesto;
     private String fechaEntregadaEsperada;
+    private String estadoTexto;
 
+
+    public String getEstadoTexto() {
+        return estadoTexto;
+    }
+
+    public void setEstadoTexto(String estadoTexto) {
+        this.estadoTexto = estadoTexto;
+    }
 
     public Long getId() {
         return id;
