@@ -25,7 +25,7 @@ public class Project implements PrototypeProject {
     private ProjectState estado;
 
     @ManyToOne
-    @JoinColumn(name = "nit", referencedColumnName = "nit", nullable = false)
+    @JoinColumn(name = "nit", referencedColumnName = "nit")
     @NotNull
     private Company company;
 

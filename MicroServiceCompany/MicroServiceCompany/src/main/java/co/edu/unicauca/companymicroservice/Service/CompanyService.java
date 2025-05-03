@@ -3,6 +3,8 @@ package co.edu.unicauca.companymicroservice.Service;
 import co.edu.unicauca.companymicroservice.Entities.Company;
 import co.edu.unicauca.companymicroservice.Entities.Contacto;
 import co.edu.unicauca.companymicroservice.Infra.DTO.CompanyDTO;
+import co.edu.unicauca.companymicroservice.Infra.DTO.CompanyRequestProject;
+import co.edu.unicauca.companymicroservice.Infra.DTO.ProjectRequestCompany;
 import co.edu.unicauca.companymicroservice.Infra.DTO.UsuarioRequest;
 import co.edu.unicauca.companymicroservice.Infra.Mappers.CompanyMapper;
 import co.edu.unicauca.companymicroservice.Infra.Mappers.UsuarioMapper;
@@ -69,7 +71,15 @@ public class CompanyService{
             companyRepository.save(company);
 
             UsuarioRequest userdto=usuarioMapper.obteneruser(entity);
+
+            CompanyRequestProject companyRequestProject = new CompanyRequestProject();
+            companyRequestProject.setNit(Long.valueOf(company.getNit()));
+            companyRequestProject.setNombre(company.getNombre());
+
             rabbitTemplate.convertAndSend(RabbitMQConfig.QUEUE_COMPANY_CREATED,userdto);
+
+            rabbitTemplate.convertAndSend(RabbitMQConfig.PROJECT_QUEUE,companyRequestProject);
+
             return true;
         }catch (Exception e){
             e.printStackTrace();

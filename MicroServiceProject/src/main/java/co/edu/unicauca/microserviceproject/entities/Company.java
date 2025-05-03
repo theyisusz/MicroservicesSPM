@@ -13,7 +13,7 @@ public class Company {
     private Long nit;
     private String nombre;
 
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "company")
     private List<Project> projects = new ArrayList<>();
 
     public Long getNit() {
