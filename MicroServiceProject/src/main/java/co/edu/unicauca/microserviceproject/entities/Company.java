@@ -12,7 +12,7 @@ public class Company {
     @Id
     private Long nit;
     private String nombre;
-
+    private String email;
 
 
     @OneToMany(mappedBy = "company")
@@ -52,6 +52,21 @@ public class Company {
         this.nombre = nombre;
         estado = "ACTIVO";
     }
+    public Company(Long nit, String nombre,String estado,String email) {
+        this.nit = nit;
+        this.nombre = nombre;
+        estado = "ACTIVO";
+        this.email = email;
+    }
+
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     @PrePersist
     public void prePersist(){
@@ -59,4 +74,5 @@ public class Company {
             estado = "ACTIVO";
         }
     }
+
 }

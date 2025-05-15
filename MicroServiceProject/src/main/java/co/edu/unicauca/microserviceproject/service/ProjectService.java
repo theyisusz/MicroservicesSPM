@@ -1,6 +1,7 @@
 package co.edu.unicauca.microserviceproject.service;
 
 import co.edu.unicauca.microserviceproject.infra.Prototype.ProjectPrototypeRegister;
+import co.edu.unicauca.microserviceproject.infra.config.RabbitMQConfig;
 import co.edu.unicauca.microserviceproject.infra.dto.*;
 import co.edu.unicauca.microserviceproject.entities.Company;
 import co.edu.unicauca.microserviceproject.entities.Project;
@@ -135,6 +136,7 @@ public class ProjectService {
 
         if ("avanzar".equalsIgnoreCase(action)) {
             messageResponse = project.getEstado().avanzarEstado(project);
+
         } else if ("noAvanzar".equalsIgnoreCase(action)) {
             messageResponse = project.getEstado().NoAvanzaEstado(project);
         } else {
@@ -142,6 +144,13 @@ public class ProjectService {
         }
         project.setEstado(messageResponse.getEstado());
         projectRepository.save(project);
+        NotificationStatus notificationDTO = new NotificationStatus(
+                project.getNombre(),
+                messageResponse.getEstado().getEstado(),
+                project.getCompany().getEmail(),
+                project.getCoordinator().getGmail()
+        );
+        rabbitTemplate.convertAndSend(RabbitMQConfig.PROJECT_STATUS_NOTIFICATION_QUEUE, notificationDTO);
 
         return new ProjectStatusResponse(messageResponse.getEstado().getEstado(), messageResponse.getMessage());
     }

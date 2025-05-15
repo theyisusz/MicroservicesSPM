@@ -45,13 +45,14 @@ public class DataLoader implements CommandLineRunner {
         Company company1 = new Company();
         company1.setNit(Long.valueOf("30"));
         company1.setNombre("meradata");
+        company1.setEmail("yisus0816z1@gmail.com");
         companyRepository.save(company1);
 
         // Crear coordinador
 
         Coordinator coordinator = new Coordinator();
         coordinator.setCodCor(Long.valueOf("123"));
-        coordinator.setGmail("lucia.ramirez@universidad.edu.co");
+        coordinator.setGmail("yisus0816z@gmail.com");
         coordinatorRepository.save(coordinator);
 
         // Crear proyecto
