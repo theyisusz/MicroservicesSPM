@@ -78,6 +78,7 @@ public class CompanyService{
 
             rabbitTemplate.convertAndSend(RabbitMQConfig.QUEUE_COMPANY_CREATED,userdto);
 
+
             rabbitTemplate.convertAndSend(RabbitMQConfig.COMPANY_QUEUE,companyRequestProject);
 
             return true;

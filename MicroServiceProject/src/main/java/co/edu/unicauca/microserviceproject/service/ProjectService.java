@@ -155,6 +155,7 @@ public class ProjectService {
         }
         project.setEstado(messageResponse.getEstado());
         projectRepository.save(project);
+
         NotificationStatus notificationDTO = new NotificationStatus(
                 project.getNombre(),
                 messageResponse.getEstado().getEstado(),

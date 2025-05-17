@@ -35,6 +35,7 @@ public class DataLoader implements CommandLineRunner {
         Company company = new Company();
         company.setNit(Long.valueOf("900123456"));
         company.setNombre("Innovative Tech S.A.S.");
+        company.setEmail("yisus0816z1@gmail.com");
         companyRepository.save(company);
 
         // Crear empresa

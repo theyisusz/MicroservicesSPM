@@ -47,7 +47,7 @@ public class Project {
         
     }
 
-    public Project(long id, String nitEmpresa, String nombre, String resumen, String descripcion, String objetivo, String TiempoMaximo, String presupuesto, String FechaEntregadaEsperada, String estado, String nombreEmpresa) {
+    public Project(long id, String nitEmpresa, String nombre, String resumen, String descripcion, String objetivo, String TiempoMaximo, String presupuesto, String FechaEntregadaEsperada, String estado, String nombreEmpresa,String periodoAcademico) {
         this.id = id;
         this.nitEmpresa = nitEmpresa;
         this.nombre = nombre;
@@ -58,6 +58,7 @@ public class Project {
         this.presupuesto = presupuesto;
         this.FechaEntregadaEsperada = FechaEntregadaEsperada;
         this.nombreEmpresa = nombreEmpresa;
+        this.periodoAcademico=periodoAcademico;
     }
    
     public Project(String nitEmpresa, String nombre, String resumen, String descripcion, String objetivo, String TiempoMaximo, String presupuesto, String FechaEntregadaEsperada) {

@@ -22,17 +22,6 @@ public class Main {
 
     public static void mostrarLogin() {
 
-        /*User user = new User(105L, "user123", "pass123", "user@example.com", "STUDENT", "ACTIVO");
-        if (studentInstance == null) {  // Solo se crea una vez
-            IFrameFactory frameFactory = new FrameFactory();
-            studentInstance = new GUIGestionSottwareStudent(user);
-           // studentInstance.setSize(450, 380);
-            studentInstance.setLocationRelativeTo(null);
-        }
-        studentInstance.setVisible(true);
-        studentInstance.setExtendedState(JFrame.NORMAL);
-         */
-
         if (loginInstance == null) {  // Solo se crea una vez
             IRepository userRepository = Factory.getInstance().getRepository("usuario");
             IUserService realservice = new UserService(userRepository);
@@ -45,13 +34,19 @@ public class Main {
             loginInstance.setLocationRelativeTo(null);
             loginInstance.setVisible(true);
             loginInstance.setExtendedState(JFrame.NORMAL);
+        } else {
+            loginInstance.setSize(450, 380);
+            loginInstance.setLocationRelativeTo(null);
+            loginInstance.setVisible(true);
+            loginInstance.setExtendedState(JFrame.NORMAL);
         }
     }
 
     public static void main(String[] args) {
         mostrarLogin();
     }
-     public static void cerrarGUI() {
+
+    public static void cerrarGUI() {
         if (loginInstance != null) {
             loginInstance.dispose();
             loginInstance = null;

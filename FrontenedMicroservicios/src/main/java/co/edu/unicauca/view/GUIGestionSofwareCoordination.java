@@ -158,6 +158,11 @@ public class GUIGestionSofwareCoordination extends javax.swing.JFrame implements
 
         btnGestionarProyecto.setBackground(new java.awt.Color(223, 224, 226));
         btnGestionarProyecto.setText("Gestionar proyecto");
+        btnGestionarProyecto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGestionarProyectoActionPerformed(evt);
+            }
+        });
 
         btnSalir.setBackground(new java.awt.Color(223, 224, 226));
         btnSalir.setText("Salir");
@@ -566,6 +571,10 @@ public class GUIGestionSofwareCoordination extends javax.swing.JFrame implements
         jScrollPane1.repaint();
     }//GEN-LAST:event_btnProjectsActionPerformed
 
+    private void btnGestionarProyectoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGestionarProyectoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGestionarProyectoActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBarras;
     private javax.swing.JButton btnGestionarProyecto;
@@ -744,7 +753,9 @@ public class GUIGestionSofwareCoordination extends javax.swing.JFrame implements
     private void abrirGUICoordinadorProject(Project p) {
         // Instanciar la GUI del coordinador y mostrarla
         GUIGestionSofwareCoordinationProject instance = new GUIGestionSofwareCoordinationProject(projectService, p,usuario);
+        
         instance.setExtendedState(JFrame.NORMAL);
+         instance.setLocationRelativeTo(null);
         instance.setVisible(true);
     }
 
