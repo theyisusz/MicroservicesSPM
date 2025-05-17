@@ -20,6 +20,8 @@ public class Project {
     private String tiempoMaximo;
     private String presupuesto;
     private String FechaEntregadaEsperada;
+    private String periodoAcademico;
+    
     
     private ProjectState estado;
     private String nombreEmpresa;
@@ -184,6 +186,20 @@ public class Project {
      */
     public void setPostulations(List<Postulation> postulations) {
         this.postulations = postulations;
+    }
+
+    /**
+     * @return the periodoAcademico
+     */
+    public String getPeriodoAcademico() {
+        return periodoAcademico;
+    }
+
+    /**
+     * @param periodoAcademico the periodoAcademico to set
+     */
+    public void setPeriodoAcademico(String periodoAcademico) {
+        this.periodoAcademico = periodoAcademico;
     }
 
     

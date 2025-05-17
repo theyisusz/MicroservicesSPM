@@ -1,16 +1,13 @@
 package co.edu.unicauca.microserviceproject.repository;
 
 import co.edu.unicauca.microserviceproject.entities.*;
+import co.edu.unicauca.microserviceproject.infra.states.EnEjecucionState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import java.sql.Timestamp;
-
 import org.springframework.stereotype.Component;
-
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class DataLoader implements CommandLineRunner {
@@ -65,6 +62,7 @@ public class DataLoader implements CommandLineRunner {
         project.setFechaEntregadaEsperada("2025-10-30");
         project.setCompany(company);
         project.setCoordinator(coordinator);
+        project.setPeriodoAcademico("2025-1");
 
         Project project2 = new Project();
         project2.setNombre("MeraSoftware");
@@ -76,13 +74,14 @@ public class DataLoader implements CommandLineRunner {
         project2.setFechaEntregadaEsperada("2025-09-15");
         project2.setCompany(company1);
         project2.setCoordinator(coordinator);
-
+        project2.setPeriodoAcademico("2024-2");
+        project2.setEstado(new EnEjecucionState());
+        project2.setEstadoTexto("EN EJECUCION");
         // Crear postulaciones y agregarlas al proyecto
-        Date currentDate = new Date(System.currentTimeMillis());
-        Postulation post1 = new Postulation(Long.valueOf("11"),Long.valueOf("123456"), project.getId(), new Timestamp(currentDate.getTime()));
-        Postulation post2 = new Postulation(Long.valueOf("22"),Long.valueOf("765432"), project.getId(), new Timestamp(currentDate.getTime()));
+        LocalDateTime currentDate = LocalDateTime.now();
+        Postulation post1 = new Postulation(Long.valueOf("11"),Long.valueOf("123456"), project.getId(), currentDate);
+        Postulation post2 = new Postulation(Long.valueOf("22"),Long.valueOf("765432"), project.getId(), currentDate);
 
-        System.out.println(post1.getIdPostulation());
         List<Postulation> postulaciones = new ArrayList<>();
         postulaciones.add(post1);
         postulaciones.add(post2);
@@ -105,6 +104,6 @@ public class DataLoader implements CommandLineRunner {
         Comment comment3 = new Comment(project2.getId().intValue(), 123, "Lucía Ramírez",
                 "El enfoque en IA para análisis de juegos es innovador.");
         commentRepository.save(comment3);
-        
+
     }
 }

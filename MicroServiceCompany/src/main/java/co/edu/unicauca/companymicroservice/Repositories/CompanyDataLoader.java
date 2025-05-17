@@ -37,7 +37,7 @@ public class CompanyDataLoader implements CommandLineRunner {
             Contacto contacto1= new Contacto("Garcia", "Gerente", "grta@empresa.com", "malocon","31345");
             List<Project> proyectos3 = new ArrayList<>();
 
-            Company c1 = new Company("30", "TechCorp", Company.Estado.HABILITADO, "TECNOLOGIA", contacto1, proyectos1);
+            Company c1 = new Company("900123456", "Innovative Tech S.A.S.", Company.Estado.HABILITADO, "TECNOLOGIA", contacto1, proyectos1);
             Company c2 = new Company("1002", "HealthPlus", Company.Estado.HABILITADO, "SALUD", contacto2, proyectos2);
             Company c3 = new Company("1003", "EduWorld", Company.Estado.HABILITADO, "EDUCATION", contacto3, proyectos3);
 
