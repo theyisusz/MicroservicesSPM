@@ -1,6 +1,7 @@
 package co.edu.unicauca.microserviceproject.entities;
 
 import jakarta.persistence.*;
+import org.antlr.v4.runtime.misc.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 public class Company {
 
     @Id
+    @NotNull
     private Long nit;
     private String nombre;
     private String email;
@@ -58,7 +60,6 @@ public class Company {
         estado = "ACTIVO";
         this.email = email;
     }
-
 
     public String getEmail() {
         return email;
