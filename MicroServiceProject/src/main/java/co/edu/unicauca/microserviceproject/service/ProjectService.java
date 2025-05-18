@@ -1,5 +1,6 @@
 package co.edu.unicauca.microserviceproject.service;
 
+import co.edu.unicauca.microserviceproject.entities.Coordinator;
 import co.edu.unicauca.microserviceproject.infra.Prototype.ProjectPrototypeRegister;
 import co.edu.unicauca.microserviceproject.infra.config.RabbitMQConfig;
 import co.edu.unicauca.microserviceproject.infra.dto.*;
@@ -100,6 +101,8 @@ public class ProjectService {
         if (company.isEmpty()) {
             throw new IllegalArgumentException("La compañía con NIT " + dto.getNitCompany() + " no existe.");
         }
+        Optional<Coordinator> coordinator = coordinatorRepository.findById(Long.valueOf("123"));
+        project.setCoordinator(coordinator.get());
 
         project.setCompany(company.get());
         Project savedProject = projectRepository.save(project);
