@@ -109,29 +109,29 @@ public class ProjectService {
 
         ProjectRequestCompany projectRequestCompany = projectMapperCompany.dto(savedProject);
 
-        try {
-            // Enviar a RabbitMQ
-            rabbitTemplate.convertAndSend(RabbitMQConfig.PROJECT_QUEUE, projectRequestCompany);
-        } catch (AmqpException e) {
-            System.out.println(e.getMessage());
-        }
+//        try {
+//            // Enviar a RabbitMQ
+//            rabbitTemplate.convertAndSend(RabbitMQConfig.PROJECT_QUEUE, projectRequestCompany);
+//        } catch (AmqpException e) {
+//            System.out.println(e.getMessage());
+//        }
 
 
-//        // Preparar llamada REST
-//        RestTemplate restTemplate = new RestTemplate();
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//
-//        HttpEntity<ProjectRequestCompany> request = new HttpEntity<>(projectRequestCompany, headers);
-//
-//        ResponseEntity<ProjectRequestCompany> response = restTemplate.postForEntity(
-//                "http://localhost:8088/apiCompanies/saveProject",
-//                request,
-//                ProjectRequestCompany.class
-//        );
-//
-//        ProjectRequestCompany responseBody = response.getBody();
-//        System.out.println("Respuesta del microservicio: " + responseBody);
+        // Preparar llamada REST
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<ProjectRequestCompany> request = new HttpEntity<>(projectRequestCompany, headers);
+
+        ResponseEntity<ProjectRequestCompany> response = restTemplate.postForEntity(
+                "http://localhost:8088/apiCompanies/saveProject",
+                request,
+                ProjectRequestCompany.class
+        );
+
+        ProjectRequestCompany responseBody = response.getBody();
+        System.out.println("Respuesta del microservicio: " + responseBody);
 
         return savedProject;
     }
