@@ -21,6 +21,5 @@ public class NotificationListener {
 
        emailService.enviarCorreo(dto);
         System.out.println("📩 Mensaje recibido en la cola: " + dto);
-       emailService.enviarCorreo(dto);
     }
 }

@@ -5,6 +5,7 @@
 package co.edu.unicauca.view;
 
 import co.edu.unicauca.access.Factory;
+import co.edu.unicauca.access.SessionManager;
 import co.edu.unicauca.domain.entities.Company;
 import co.edu.unicauca.domain.entities.Project;
 import co.edu.unicauca.domain.entities.Student;
@@ -413,6 +414,7 @@ public class GUIGestionSofwareCoordination extends javax.swing.JFrame implements
     }//GEN-LAST:event_txtnombrecordinadorActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        SessionManager.setToken(null);
         Main.mostrarLogin();
         this.dispose();
 

@@ -321,6 +321,7 @@ public class GUIRegistreCompany extends javax.swing.JFrame {
         if (validar) {
             Company empresa = new Company(nit, nombre, email, sector, nombrecontacto, apellido, sector, cargo, "HABILITADO");
             boolean resultado = servicecompany.registreCompany(empresa);
+            System.out.println(resultado);
             if (resultado) {
                 Messages.showMessageDialog("Empresa Registrada correctamente", "Atención");
             }

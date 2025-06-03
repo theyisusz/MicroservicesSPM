@@ -74,7 +74,9 @@ co\edu\unicauca\view\GUIGestionSofwareCoordinationProject$6.class
 co\edu\unicauca\interfaces\IPostulationRepository.class
 co\edu\unicauca\view\GUIRegistreCompany$5.class
 co\edu\unicauca\view\GUIRecuperarContraseña.class
+co\edu\unicauca\domain\services\AuthService$2.class
 co\edu\unicauca\view\GUIPostularProject$3.class
+co\edu\unicauca\domain\services\AuthService.class
 co\edu\unicauca\view\GUIGestionSofwareCoordination$10.class
 co\edu\unicauca\infra\dto\CommentResponse.class
 co\edu\unicauca\interfaces\IFrameFactory.class
@@ -97,8 +99,10 @@ co\edu\unicauca\domain\entities\User.class
 co\edu\unicauca\interfaces\IUserService.class
 co\edu\unicauca\view\GUIGestionSofwareCoordination$6.class
 co\edu\unicauca\domain\services\CompanyService.class
+co\edu\unicauca\domain\services\AuthService$1.class
 co\edu\unicauca\infra\adapter\ProjectRepositoryAdapter.class
 co\edu\unicauca\infra\dto\ProjectStatusRequest.class
+co\edu\unicauca\access\SessionManager.class
 co\edu\unicauca\view\GUILogin.class
 co\edu\unicauca\view\GUIRegisterStudent$4.class
 co\edu\unicauca\infra\adapter\ProjectRequestCompany.class

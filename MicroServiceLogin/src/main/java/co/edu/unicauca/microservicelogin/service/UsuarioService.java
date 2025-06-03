@@ -10,9 +10,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import org.modelmapper.ModelMapper;
+import jakarta.ws.rs.ClientErrorException;
+import jakarta.ws.rs.core.Response;
+
 
 @Service
 public class UsuarioService {
+    @Autowired
+    private KeycloakUserService keycloakUserService;
+
     ModelMapper modelMapper= new ModelMapper();
     @Autowired
     private UsuarioRepository repository;
@@ -27,7 +33,23 @@ public class UsuarioService {
     }
     @Transactional
     public User save(UsuarioRequest usuario) {
-        User user=modelMapper.map(usuario, User.class);
+        try {
+            // 1. Registrar en Keycloak
+            keycloakUserService.crearUsuarioEnKeycloak(
+                    usuario.getUsername(),
+                    usuario.getContrasenia(),
+                    usuario.getEmail(),
+                    usuario.getRol().toLowerCase()
+            );
+        } catch (ClientErrorException e) {
+            if (e.getResponse().getStatus() == 409) {
+                System.out.println("Usuario ya existe en Keycloak: " + usuario.getUsername());
+
+            } else {
+                throw e;
+            }
+        }
+        User user = modelMapper.map(usuario, User.class);
         return repository.save(user);
     }
     @Transactional
